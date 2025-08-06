@@ -65,7 +65,7 @@ Route::put('/selfstudy/{id}', [SelfStudyController::class, 'update']);
 Route::post('/selfstudy', [SelfStudyController::class, 'store']);
 
 // 
-Route::get('/task', [TaskController::class, 'index']);
+// Route::get('/task', [TaskController::class, 'index']);
 
 //Week's Goal
 Route::get('/week-goals', [WeekGoalController::class, 'getAllWeekGoals']);

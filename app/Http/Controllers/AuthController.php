@@ -9,25 +9,43 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
+    // public function login(Request $request)
+    // {
+    //     $credentials = $request->only(['email', 'password']);
+    
+    //     try {
+    //         if (!$token = auth('api')->attempt($credentials)) {
+    //             return response()->json([
+    //                 'error' => 'Email hoặc mật khẩu không đúng'
+    //             ], 401);
+    //         }
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'error' => 'Không thể tạo token',
+    //             'details' => $e->getMessage()
+    //         ], 500);
+    //     }
+    
+    //     return $this->respondWithToken($token);
+    // }
+
+
     public function login(Request $request)
-    {
-        $credentials = $request->only(['email', 'password']);
-    
-        try {
-            if (!$token = auth('api')->attempt($credentials)) {
-                return response()->json([
-                    'error' => 'Email hoặc mật khẩu không đúng'
-                ], 401);
-            }
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Không thể tạo token',
-                'details' => $e->getMessage()
-            ], 500);
-        }
-    
-        return $this->respondWithToken($token);
+{
+    $credentials = $request->only(['email', 'password']);
+
+    \Log::info('Đăng nhập:', $credentials);
+
+    if (!$token = auth('api')->attempt($credentials)) {
+        \Log::error('Login failed for:', $credentials);
+        return response()->json([
+            'error' => 'Email hoặc mật khẩu không đúng'
+        ], 401);
     }
+
+    return $this->respondWithToken($token);
+}
+
 
     protected function respondWithToken($token)
     {
