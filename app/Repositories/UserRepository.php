@@ -12,11 +12,23 @@ class UserRepository
         $this->model = $user;
     }
 
-    public function getStudents()
-    {
-        $students = User::where('role', '=', 'student')->get();
-        return $students;
-    }
+public function getStudents()
+{
+   return User::where('role', 'student')
+    ->join('students', 'users.id', '=', 'students.user_id')
+    ->select(
+        'users.id',
+        'users.name',
+        'users.image',
+        'students.major',
+        'students.year',
+        'students.studentId',
+        'students.enrollDate'
+    )
+    ->get();
+
+}
+
 
     public function getUserId($name)
     {

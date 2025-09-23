@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\GoalController;
+use App\Http\Controllers\GoalHistoryController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -18,6 +20,8 @@ use App\Http\Controllers\AcademyController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\WeekGoalController;
 use App\Http\Controllers\ListGoalController;
+use App\Http\Controllers\SemesterController;
+
 Route::apiResource('listgoal', ListGoalController::class);
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -25,6 +29,8 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/v1/login', [AuthController::class, 'login']);
 Route::post('/v1/logout', [AuthController::class, 'logout']);
+Route::post('v1/register', [AuthController::class, 'register']);
+
 
 Route::get('/v1/teachers', [TeacherController::class, 'index']);
 
@@ -36,6 +42,7 @@ Route::delete('/v1/classes/{id}', [ClassController::class, 'delete']);
 Route::patch('/v1/classes/{id}', [ClassController::class, 'updateClass']);
 // Student management
 Route::get('/v1/students', [UserController::class, 'getStudents']);
+Route::post('/v1/avatar', [UserController::class, 'updateAvatar']);
 // Teacher management
 Route::get('/v1/teachers', [UserController::class, 'getTeachers']);
 
@@ -58,6 +65,7 @@ Route::put('/goal/{id}/completeStatus', [GoalController::class, 'updateCompleteS
 Route::get('/inclass',[InClassController::class,'index']);
 Route::put('/inclass/{id}',[InClassController::class,'update']);
 Route::get('/inclass/{id}',[InClassController::class,'show']);
+Route::post('/inclass/create/',[InClassController::class,'store']);
 
 Route::get('/selfstudy',[SelfStudyController::class,'index']);
 Route::get('/selfstudy/{id}', [SelfStudyController::class, 'show']); 
@@ -75,3 +83,23 @@ Route::put('/week-goals/{id}', [WeekGoalController::class, 'updateWeekGoal']);
 Route::put('/week-goals/{id}/status', [WeekGoalController::class, 'updateWeekGoalStatus']);
 Route::delete('/week-goals/{id}', [WeekGoalController::class, 'deleteWeekGoal']);
 Route::get('/week-goals/status/{status}', [WeekGoalController::class, 'getWeekGoalsByStatus']);
+
+
+// SemesterController
+
+Route::get('/semesters', [SemesterController::class, 'index']);
+Route::post('/semesters/store', [SemesterController::class, 'store']);
+Route::get('/semesters/{id}', [SemesterController::class, 'show']);
+Route::put('/semesters/{id}', [SemesterController::class, 'update']);
+Route::delete('/semesters/{id}', [SemesterController::class, 'destroy']);
+
+//GoalHistoryController
+Route::get('/goal-history/{goalId}', [GoalHistoryController::class, 'getHistoryByGoal']);
+Route::post('/goal-history', [GoalHistoryController::class, 'store']);
+Route::get('/goal-history-with-goal/{goalId}', [GoalHistoryController::class, 'getGoalWithHistory']);
+
+//StudentController
+Route::put('/students/{id}', [StudentController::class, 'update']);
+
+Route::get('users/{userId}/goals', [GoalController::class, 'getGoalsByUser']);
+

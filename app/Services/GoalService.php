@@ -68,4 +68,8 @@ class GoalService {
     {
         return $this->goalRepository->getGoalsByStatus($status);
     }
+       public function getGoalsByUser($userId)
+    {
+        return $this->goalRepository->getGoalsByUser($userId);
+    }
 }
