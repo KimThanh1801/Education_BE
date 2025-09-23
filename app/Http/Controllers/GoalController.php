@@ -33,16 +33,17 @@ class GoalController extends Controller
     // Tạo mục tiêu mới
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'course' => 'required|string',
-            'goals' => 'required|string',
-            'courseExpectations' => 'required|string',
-            'teacherExpectations' => 'required|string',
-            'selfExpectations' => 'required|string',
-            'dueDate' => 'required|date',
-            'completeStatus' => 'in:doing,done', // Kiểm tra trạng thái hợp lệ
-        ]);
+$validated = $request->validate([
+    'user_id' => 'required|exists:users,id',
+    'course' => 'required|string',
+    'goals' => 'required|string',
+    'courseExpectations' => 'required|string',
+    'teacherExpectations' => 'required|string',
+    'selfExpectations' => 'required|string',
+    'dueDate' => 'required|date',
+    'completeStatus' => 'in:doing,done',
+    'semester_id' => 'required|exists:semesters,id', // thêm validate
+]);
 
         // Tạo mục tiêu mới
         $goal = $this->goalService->createGoal($validated);
@@ -53,17 +54,17 @@ class GoalController extends Controller
     // Cập nhật mục tiêu
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'course' => 'required|string',
-            'goals' => 'required|string',
-            'courseExpectations' => 'required|string',
-            'teacherExpectations' => 'required|string',
-            'selfExpectations' => 'required|string',
-            'dueDate' => 'required|date',
-            'completeStatus' => 'in:doing,done'  // Kiểm tra trạng thái hợp lệ
-        ]);
-
+$validated = $request->validate([
+    'user_id' => 'required|exists:users,id',
+    'course' => 'required|string',
+    'goals' => 'required|string',
+    'courseExpectations' => 'required|string',
+    'teacherExpectations' => 'required|string',
+    'selfExpectations' => 'required|string',
+    'dueDate' => 'required|date',
+    'completeStatus' => 'in:doing,done',
+    'semester_id' => 'required|exists:semesters,id', // thêm validate
+]);
         $goal = $this->goalService->updateGoal($id, $validated);
 
         if (!$goal) {
@@ -114,5 +115,8 @@ class GoalController extends Controller
 
     return response()->json($goals, 200);
 }
-
+public function getGoalsByUser($userId) {
+    $goals = $this->goalService->getGoalsByUser($userId);
+    return response()->json($goals);
+}
 }

@@ -21,7 +21,8 @@ class Goal extends Model
         'teacherExpectations',
         'selfExpectations',
         'dueDate',
-        'completeStatus', 
+        'completeStatus',
+         'semester_id', 
     ];
 
     // Quan hệ với User
